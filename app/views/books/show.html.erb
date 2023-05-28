@@ -1,0 +1,36 @@
+<main>
+  <div class="container">
+    <div class="row">
+      <%= render 'list', book: @book ,user: @user%>
+      <div class="col-md-8 offset-md-1">
+        <h2>Book detail</h2>
+        <table class="table">
+          <tr>
+            <th>
+              <%= link_to user_path(@book_deteil.user_id) do %>
+                <%= image_tag @user.get_profile_image(100,100) %>
+                <%= @user.name %>
+              <%end%>
+            </th>
+            <th>
+              <%= link_to book_path(@book_deteil.id) do %>
+                <%= @book_deteil.title %>
+              <% end %>
+            </th>
+            <th>
+              <%= @book_deteil.body %>
+            </th>
+            <% if @user ==current_user %>
+              <th>
+                <%= link_to 'Edit' ,edit_book_path(@book_deteil),class: "btn btn-success" %>
+              </th>
+              <th>
+                <%= link_to 'Destroy' ,book_path(@book_deteil), method: :delete, class: "btn btn-danger" %>
+              </th>
+            <% end %>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>

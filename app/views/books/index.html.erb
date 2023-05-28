@@ -1,0 +1,80 @@
+
+<main>
+    <% if @book.errors.any? %>
+      <% if @book.errors.count==1 %>
+          <h3><%= @book.errors.count %> error prohibited this obj from being saved:</h3>
+      <% else %>
+          <h3><%= @book.errors.count %> errors prohibited this obj from being saved:</h3>
+      <% end %>
+      <ul>
+        <% @book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <div class="container px-5">
+        <div class="row">
+            <div class="col-md-3">
+                <h2>User info</h2>
+                <%= image_tag current_user.get_profile_image(100,100) %>
+                <table class="table">
+                    <tr>
+                        <th>name</th>
+                        <th><%= current_user.name %></th>
+                    </tr>
+                    <tr>
+                        <th>introduction</th>
+                        <th><%= current_user.introduction %></th>
+                    </tr>
+                </table>
+                <%= link_to edit_user_path(current_user), class: "btn btn-outline-secondary btn-block" do %>
+                <i class="fas fa-user-cog"></i>
+                <% end %>
+
+                <h2>New book</h2>
+                <%= form_with model: @book do |f| %>
+                    <p>Title</p>
+                    <%= f.text_field :title %>
+                    <p>Opinion</p>
+                    <%= f.text_area :body %>
+                    <%= f.submit 'Create Book', class:"btn btn-success" %>
+                <% end %>
+            </div>
+            <div class="col-md-8 offset-md-1">
+                <h2>Books</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Opinion</th>
+                        </tr>
+                    </thead>
+                    <% @books.each do |book| %>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <%= link_to user_path(book.user_id) do %>
+                                <%= image_tag book.user.get_profile_image(100,100) %>
+                                <% end %>
+                            </th>
+                            <th>
+                                <%= link_to book_path(book.id) do %>
+                                <%= book.title %>
+                                <% end %>
+                            </th>
+                            <th>
+                                <%= book.body %>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <%end%>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</main>
