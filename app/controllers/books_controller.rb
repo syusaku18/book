@@ -37,6 +37,7 @@ class BooksController < ApplicationController
     @book_deteil= Book.find(params[:id])
     @book=Book.new
     @user = @book_deteil.user
+    @book_comment = BookComment.new
   end
   def destroy
     @book=Book.find(params[:id])
@@ -48,7 +49,8 @@ class BooksController < ApplicationController
     params.require(:book).permit(:title, :body)
   end
   def is_matching_login_user
-    user = User.find(params[:id])
+    book_deteil= Book.find(params[:id])
+    user = book_deteil.user
     unless user.id == current_user.id
       redirect_to  books_path
     end

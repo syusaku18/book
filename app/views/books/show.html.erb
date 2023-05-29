@@ -27,9 +27,51 @@
               <th>
                 <%= link_to 'Destroy' ,book_path(@book_deteil), method: :delete, class: "btn btn-danger" %>
               </th>
+              <th>
+                <% if @book_deteil.favorited_by?(current_user) %>
+                  <p>
+                    <%= link_to book_favorites_path(@book_deteil), method: :delete, style: "color: #ff0088;" do %>
+                      <i class="fas fa-heart"></i><%= @book_deteil.favorites.count %>
+                    <% end %>
+                  </p>
+                <% else %>
+                  <p>
+                    <%= link_to book_favorites_path(@book_deteil), method: :post do %>
+                      <i class="fas fa-heart"></i><%= @book_deteil.favorites.count %>
+                    <% end %>
+                  </p>
+                <% end %>
+              </th>
+              <th>
+                <p>コメント件数：<%= @book_deteil.book_comments.count %></p>
+              </th>
             <% end %>
           </tr>
         </table>
+        <div>
+
+              <% @book_deteil.book_comments.each do |book_comment| %>
+
+                <p>
+                  <%= image_tag book_comment.user.get_profile_image(100,100) %>
+                  <%= book_comment.comment %>
+                  <% if book_comment.user == current_user %>
+                    <%= link_to "Destroy", book_book_comment_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger" %>
+                  <% end %>
+                </p>
+
+                <%= link_to user_path(book_comment.user_id) do %>
+                  <%= book_comment.user.name %>
+                <% end %>
+
+              <% end %>
+        </div>
+        <div>
+            <%= form_with model: [@book_deteil, @book_comment] do |f| %>
+              <%= f.text_area :comment, rows: '5'%><br>
+              <%= f.submit "送信する" %>
+            <% end %>
+        </div>
       </div>
     </div>
   </div>
